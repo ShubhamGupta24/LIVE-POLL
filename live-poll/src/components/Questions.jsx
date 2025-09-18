@@ -96,7 +96,7 @@ export const Questions = () => {
                         )}
                     </div>
                 </div>
-                <div className="mb-4 border border-[#AF8FF1]">
+                <div className="mb-4 border border-[#AF8FF1] rounded-[10px] p-4">
                     <p
                         className="text-lg mb-4 font-medium text-white p-4 rounded-t-[10px] bg-gradient-to-r from-[#343434] to-[#6E6E6E]"
                     >

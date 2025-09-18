@@ -122,13 +122,15 @@ export const PollPreview = () => {
                             {poll.options.map((option, i) => (
                                 <li
                                     key={i}
-                                    className={`m-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
-                                    style={option.isCorrect ? { borderColor: "#7765DA" } : {}}
+                                    className={`m-3 p-3 rounded-xl border flex items-center text-lg font-medium
+        ${option.isCorrect ? "border-2 border-[#7765DA] bg-gradient-to-r from-[#8F64E1] via-[#8F64E1] to-[#1D68BD] text-white"
+                                            : "border border-gray-300 bg-gray-100 text-gray-700"}`}
                                 >
                                     {option.text}
                                 </li>
                             ))}
                         </ul>
+
                     ) : (
                         <div>
                             <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>

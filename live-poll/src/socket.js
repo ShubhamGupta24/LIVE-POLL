@@ -2,7 +2,7 @@
 import { io } from "socket.io-client";
 
 let socket;
-const API_URL = process.env.REACT_APP_BACKEND_CONNECT_API;
+const API_URL = import.meta.env.VITE_BACKEND_CONNECT_API;
 // connect only when called
 export const initSocket = ({ userName, role } = {}) => {
     if (!socket) {

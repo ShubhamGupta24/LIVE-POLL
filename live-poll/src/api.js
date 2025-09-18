@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // backend base URL
-const API_URL = process.env.REACT_APP_BACKEND_CONNECT_API + "/api/polls";
+const API_URL = import.meta.env.VITE_BACKEND_CONNECT_API + "/api/polls";
 if (!API_URL) {
     console.warn("⚠️ API_URL not defined. Check .env or Render env settings.");
 }

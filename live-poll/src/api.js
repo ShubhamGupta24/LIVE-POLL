@@ -19,4 +19,4 @@ export const submitVote = (data) => axios.post(`${API_URL}/vote`, data);
 
 export const createPoll = (data) => axios.post(`${API_URL}/create`, data);
 
-export const endPoll = (data) => axios.post(`${API_URL}/end`, data);
+export const endPoll = (pollId) => axios.post(`${API_URL}/end`, { pollId });

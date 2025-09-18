@@ -34,9 +34,20 @@ export const Questions = () => {
             }
         };
 
-        socket.on("updatePoll", handleUpdate);
+        const handleNewPoll = (newPoll) => {
+            setPoll(newPoll);
+            setTimeLeft(newPoll.duration);
+            setSubmitted(false);
+            setSelectedOption("");
+        };
 
-        return () => socket.off("updatePoll", handleUpdate);
+        socket.on("updatePoll", handleUpdate);
+        socket.on("newPoll", handleNewPoll);
+
+        return () => {
+            socket.off("updatePoll", handleUpdate);
+            socket.off("newPoll", handleNewPoll);
+        };
     }, [poll, socket]);
 
     // Timer countdown (just for display, no auto-end)

@@ -49,6 +49,10 @@ const createPoll = (req, res) => {
     try {
         const { question, options, duration } = req.body;
         const poll = PollService.createPoll({ question, options, duration });
+        // 👇 Emit new poll to all connected clients (students)
+        const { getIO } = require("../socket");
+        const io = getIO();
+        io.emit("newPoll", poll);
         return res.status(201).json({ success: true, poll });
     } catch (error) {
         console.error(error);

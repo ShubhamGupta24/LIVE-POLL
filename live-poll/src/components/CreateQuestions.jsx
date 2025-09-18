@@ -17,7 +17,12 @@ export const CreateQuestions = () => {
     useEffect(() => {
         const socket = initSocket({ role: "teacher" });
         console.log("🧑‍🏫 Teacher socket initialized:", socket.id);
+
+        return () => {
+            socket.disconnect();
+        };
     }, []);
+
 
     const handleOptionChange = (index, value) => {
         const newOptions = [...options];

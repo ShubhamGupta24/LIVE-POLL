@@ -66,7 +66,7 @@ export const Questions = () => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timeLeft]);
+    }, []);
 
 
 

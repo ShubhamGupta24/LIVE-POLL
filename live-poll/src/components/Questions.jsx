@@ -55,7 +55,7 @@ export const Questions = () => {
         if (!poll || submitted || timeLeft <= 0) return;
         const timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
         return () => clearInterval(timer);
-    }, [poll, timeLeft, submitted]);
+    }, [poll, submitted]);
 
     // Submit vote
     const handleSubmit = async () => {

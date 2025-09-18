@@ -98,7 +98,7 @@ export const Questions = () => {
                 </div>
 
                 <p
-                    className="text-lg mb-4 font-medium text-white p-4 rounded-xl bg-gradient-to-r from-[#343434] to-[#6E6E6E]"
+                    className="text-lg mb-4 font-medium text-white p-4 rounded-t-[10px] bg-gradient-to-r from-[#343434] to-[#6E6E6E]"
                 >
                     {poll.question}
                 </p>

@@ -90,10 +90,14 @@ export const PollPreview = () => {
 
     return (
         <div className="p-5 max-w-md mx-auto">
-            <h5 className="text-xl mb-2">✨Intervue Poll</h5>
+            <h5 className="inline-flex mb-8 px-8 py-3 rounded-[24px] items-center justify-center gap-[7px] text-white font-bold text-xl shadow-lg
+                bg-gradient-to-r from-[#8F64E1] via-[#8F64E1] to-[#1D68BD]
+                hover:opacity-90 transition">
+                ✨Intervue Poll
+            </h5>
 
             {/* Question header */}
-            <div className="flex items-center gap-3 mb-3">
+            <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-6 space-y-6">
                 <FaQuestionCircle className="text-blue-500" size={24} />
                 <h3 className="text-lg font-semibold">Question</h3>
                 <img src={TimerImage} alt="Timer" className="w-10 h-10 inline-block" />
@@ -101,59 +105,60 @@ export const PollPreview = () => {
                     <span className="ml-auto font-bold">{timer}s</span>
                 )}
             </div>
+            <div className="mb-4 border border-[#AF8FF1]">
+                <p
+                    className="text-lg mb-4 font-medium text-white p-4 rounded-t-[10px] bg-gradient-to-r from-[#343434] to-[#6E6E6E]"
+                >
+                    {poll.question}
+                </p>
 
-            <p
-                className="text-lg mb-4 font-medium text-white p-4 rounded-xl bg-gradient-to-r from-[#343434] to-[#6E6E6E]"
-            >
-                {poll.question}
-            </p>
 
-
-            {/* Options / Results */}
-            {!submitted ? (
-                <ul className="space-y-2">
-                    {poll.options.map((option, i) => (
-                        <li key={i}
-                            className={`mb-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
-                            style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
-                            {option.text}
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <div>
-                    <h4 className="font-semibold mb-2">📊 Poll Results:</h4>
-                    {poll.options.map((option, i) => {
-                        const percentage =
-                            totalVotes > 0 ? ((option.votes / totalVotes) * 100).toFixed(1) : 0;
-                        return (
-                            <div key={i}
+                {/* Options / Results */}
+                {!submitted ? (
+                    <ul className="space-y-2">
+                        {poll.options.map((option, i) => (
+                            <li key={i}
                                 className={`mb-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
                                 style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
-                                <div className="flex justify-between mb-1">
+                                {option.text}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <div>
+                        <h4 className="font-semibold mb-2">📊 Poll Results:</h4>
+                        {poll.options.map((option, i) => {
+                            const percentage =
+                                totalVotes > 0 ? ((option.votes / totalVotes) * 100).toFixed(1) : 0;
+                            return (
+                                <div key={i}
+                                    className={`mb-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
+                                    style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
+                                    <div className="flex justify-between mb-1">
 
+                                    </div>
+                                    <div className="bg-gray-300 rounded-full h-5 overflow-hidden">
+                                        <div
+                                            className="[background:linear-gradient(99.18deg,#8F64E1_-46.89%,#1D68BD_223.45%)] h-5 rounded-full transition-all duration-500"
+                                            style={{ width: `${percentage}%` }}
+                                        ><span>{option.text}</span>
+                                            <span className="font-semibold">{percentage}%</span></div>
+                                    </div>
                                 </div>
-                                <div className="bg-gray-300 rounded-full h-5 overflow-hidden">
-                                    <div
-                                        className="[background:linear-gradient(99.18deg,#8F64E1_-46.89%,#1D68BD_223.45%)] h-5 rounded-full transition-all duration-500"
-                                        style={{ width: `${percentage}%` }}
-                                    ><span>{option.text}</span>
-                                        <span className="font-semibold">{percentage}%</span></div>
-                                </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
 
-                    <button
-                        className="fixed bottom-6 right-6 px-6 py-2 rounded-lg text-white font-semibold 
+                        <button
+                            className="fixed bottom-6 right-6 px-6 py-2 rounded-lg text-white font-semibold 
                             [background:linear-gradient(99.18deg,#8F64E1_-46.89%,#1D68BD_223.45%)]
                             hover:opacity-90 transition"
-                        onClick={() => navigate("/createQuestions")}
-                    >
-                        + Ask a new question
-                    </button>
-                </div>
-            )}
-        </div>
+                            onClick={() => navigate("/createQuestions")}
+                        >
+                            + Ask a new question
+                        </button>
+                    </div>
+                )}
+            </div>
+        </div >
     );
 };

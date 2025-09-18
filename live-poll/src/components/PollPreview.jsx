@@ -141,8 +141,6 @@ export const PollPreview = () => {
                                         className={`m-3 p-1 rounded-xl overflow-hidden relative text-white ${option.isCorrect ? "border-2 border-[#7765DA]" : ""
                                             }`}
                                     >
-                                        {/* Background bar (gray) */}
-                                        <div className="absolute inset-0 bg-gray-700 rounded-xl"></div>
 
                                         {/* Gradient bar with width proportional to percentage */}
                                         <div

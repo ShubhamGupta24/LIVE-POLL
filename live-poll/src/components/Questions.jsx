@@ -137,7 +137,7 @@ export const Questions = () => {
                                             }`}
                                     >
                                         {/* Background bar (gray) */}
-                                        <div className="absolute inset-0 bg-gray-700 rounded-xl"></div>
+                                        <div className="flex items-center m-3 gap-3 cursor-pointer p-3 rounded-xl border hover:bg-gray-100 transition"></div>
 
                                         {/* Gradient bar with width proportional to percentage */}
                                         <div

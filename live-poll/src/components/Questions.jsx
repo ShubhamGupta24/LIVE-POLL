@@ -51,14 +51,17 @@ export const Questions = () => {
     }, [poll, socket]);
 
     // Timer countdown (just for display, no auto-end)
+    // Timer countdown
     useEffect(() => {
-        if (timeLeft === null || submitted) return;
+        if (!poll || submitted) return;
+
+        // Ensure timeLeft is > 0
+        setTimeLeft(poll.duration);
 
         const timer = setInterval(() => {
             setTimeLeft((prev) => {
                 if (prev <= 1) {
                     clearInterval(timer);
-                    console.log("⏰ Timer ended", timeLeft);
                     return 0;
                 }
                 return prev - 1;
@@ -66,7 +69,8 @@ export const Questions = () => {
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [poll, submitted]); // only restart on new poll or submit
+    }, [poll, submitted]); // run when new poll loads or submitted changes
+
 
 
 

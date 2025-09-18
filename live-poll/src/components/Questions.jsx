@@ -134,12 +134,9 @@ export const Questions = () => {
                                     <div key={i}
                                         className={`m-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
                                         style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
-                                        <div className="flex justify-between mb-1 text-lg font-medium">
-
-                                        </div>
                                         <div className="bg-gray-300 h-5 rounded-full">
                                             <div
-                                                className="h-full rounded-full"
+                                                className="h-full rounded-full flex justify-between mb-1 text-lg font-medium"
                                                 style={{
                                                     width: `${percentage}%`,
                                                     background: "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)",

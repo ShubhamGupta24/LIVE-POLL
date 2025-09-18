@@ -11,7 +11,7 @@ export const Questions = () => {
     const [submitted, setSubmitted] = useState(false);
     const [timeLeft, setTimeLeft] = useState(0);
 
-    // Load poll & setup socket
+    // Load active poll and set up socket listener
     useEffect(() => {
         const loadPoll = async () => {
             try {
@@ -28,28 +28,30 @@ export const Questions = () => {
 
         loadPoll();
 
-        socket.on("updatePoll", (updatedPoll) => {
-            setPoll((prev) => (prev && updatedPoll.id === prev.id ? updatedPoll : prev));
-        });
-
-
-
-        return () => {
-            socket.off("updatePoll");
+        const handleUpdate = (updatedPoll) => {
+            if (poll && updatedPoll.id === poll.id) {
+                setPoll({ ...updatedPoll }); // replace poll to trigger re-render
+            }
         };
-    }, []);
 
-    // Timer countdown
+        socket.on("updatePoll", handleUpdate);
+
+        return () => socket.off("updatePoll", handleUpdate);
+    }, [poll, socket]);
+
+    // Timer countdown (just for display, no auto-end)
     useEffect(() => {
         if (!poll || submitted || timeLeft <= 0) return;
         const timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
         return () => clearInterval(timer);
     }, [poll, timeLeft, submitted]);
 
+    // Submit vote
     const handleSubmit = async () => {
         if (!selectedOption || !poll) return;
         const optionIndex = poll.options.findIndex((opt) => opt.text === selectedOption);
         if (optionIndex === -1) return;
+
         try {
             await submitVote({ pollId: poll.id, optionIndex });
             setSubmitted(true);
@@ -60,7 +62,7 @@ export const Questions = () => {
 
     if (!poll) return <p className="text-center mt-10 text-lg font-medium">Loading poll...</p>;
 
-    const totalVotes = poll.votes ? poll.votes.reduce((a, b) => a + b, 0) : 0;
+    const totalVotes = poll.options.reduce((sum, opt) => sum + (opt.votes || 0), 0);
 
     return (
         <div className="min-h-screen p-6 flex flex-col items-center bg-gray-50">
@@ -76,16 +78,17 @@ export const Questions = () => {
                 <div className="flex items-center gap-3 mb-2">
                     <FaQuestionCircle className="text-[#8F64E1]" size={26} />
                     <h3 className="text-xl font-semibold">Question</h3>
-                    <div className="flex items-center text-red-500 font-bold">
+                    <div className="flex items-center text-red-500 font-bold ml-auto">
                         <img src={TimerImage} alt="Timer" className="w-10 h-10" />
                         {!submitted && timeLeft > 0 && (
-                            <span className="ml-auto font-bold text-lg">00:{timeLeft}s</span>
-                        )}</div>
+                            <span className="ml-2 font-bold text-lg">00:{timeLeft}s</span>
+                        )}
+                    </div>
                 </div>
 
                 <p className="text-lg mb-4 font-medium">{poll.question}</p>
 
-                {/* Options */}
+                {/* Options or Results */}
                 {!submitted && timeLeft > 0 ? (
                     <ul className="space-y-3">
                         {poll.options.map((option, i) => (
@@ -106,10 +109,11 @@ export const Questions = () => {
                     </ul>
                 ) : (
                     <div>
-                        <h4 className="font-semibold text-lg mb-3">Poll Results:</h4>
+                        <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>
                         {poll.options.map((option, i) => {
-                            const percentage =
-                                totalVotes > 0 ? ((poll.votes[i] / totalVotes) * 100).toFixed(1) : 0;
+                            const percentage = totalVotes > 0
+                                ? ((option.votes / totalVotes) * 100).toFixed(1)
+                                : 0;
                             return (
                                 <div key={i} className="mb-3">
                                     <div className="flex justify-between mb-1 text-lg font-medium">
@@ -143,7 +147,7 @@ export const Questions = () => {
                     </button>
                 )}
 
-                {/* Time's up */}
+                {/* Timer expired message */}
                 {!submitted && timeLeft === 0 && (
                     <p className="mt-4 font-bold text-red-500 text-center text-lg">Time's up! Poll ended.</p>
                 )}

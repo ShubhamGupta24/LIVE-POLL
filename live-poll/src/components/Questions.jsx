@@ -52,10 +52,22 @@ export const Questions = () => {
 
     // Timer countdown (just for display, no auto-end)
     useEffect(() => {
-        if (!poll || submitted || timeLeft <= 0) return;
-        const timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
+        if (!poll || submitted) return; // only check submitted here
+        if (timeLeft <= 0) return;
+
+        const timer = setInterval(() => {
+            setTimeLeft((prev) => {
+                if (prev <= 1) {
+                    clearInterval(timer);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
         return () => clearInterval(timer);
-    }, []);
+    }, [poll, submitted, timeLeft]);
+
 
     // Submit vote
     const handleSubmit = async () => {

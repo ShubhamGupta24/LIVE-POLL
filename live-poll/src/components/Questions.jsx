@@ -52,24 +52,17 @@ export const Questions = () => {
 
     // Timer countdown (just for display, no auto-end)
     // Timer countdown
+    const [now, setNow] = useState(Date.now());
+
+    // Update "now" every second
     useEffect(() => {
-        if (!poll || submitted) return;
+        const interval = setInterval(() => setNow(Date.now()), 1000);
+        return () => clearInterval(interval);
+    }, []);
 
-        // Ensure timeLeft is > 0
-        setTimeLeft(poll.duration);
-
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [poll, submitted, timeLeft]); // run when new poll loads or submitted changes
+    const remainingTime = poll
+        ? Math.max(Math.ceil((poll.startTime + poll.duration * 1000 - now) / 1000), 0)
+        : 0;
 
 
 
@@ -109,7 +102,7 @@ export const Questions = () => {
                     <div className="flex items-center text-red-500 font-bold ml-auto">
                         <img src={TimerImage} alt="Timer" className="w-10 h-10" />
                         {!submitted && timeLeft > 0 && (
-                            <span className="ml-2 font-bold text-lg">00:{timeLeft}s</span>
+                            <span className="ml-2 font-bold text-lg">00:{remainingTime}s</span>
                         )}
                     </div>
                 </div>

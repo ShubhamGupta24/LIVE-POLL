@@ -96,7 +96,7 @@ export const Questions = () => {
                         )}
                     </div>
                 </div>
-                <div className="mb-4 border border-[#AF8FF1] rounded-[10px] p-4">
+                <div className="mb-4 border border-[#AF8FF1] rounded-[10px]">
                     <p
                         className="text-lg mb-4 font-medium text-white p-4 rounded-t-[10px] bg-gradient-to-r from-[#343434] to-[#6E6E6E]"
                     >
@@ -132,7 +132,7 @@ export const Questions = () => {
                                     : 0;
                                 return (
                                     <div key={i}
-                                        className={`mb-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
+                                        className={`m-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
                                         style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
                                         <div className="flex justify-between mb-1 text-lg font-medium">
 

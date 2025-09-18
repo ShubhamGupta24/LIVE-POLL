@@ -2,7 +2,7 @@
 import { io } from "socket.io-client";
 
 let socket;
-
+const API_URL = process.env.REACT_APP_BACKEND_CONNECT_API;
 // connect only when called
 export const initSocket = ({ userName, role } = {}) => {
     if (!socket) {
@@ -11,7 +11,7 @@ export const initSocket = ({ userName, role } = {}) => {
         if (userName) query.userName = userName;
         if (role) query.role = role;
 
-        socket = io("http://localhost:5000", {
+        socket = io(`${API_URL}/`, {
             transports: ["websocket"],
             query, // send only what is provided
         });

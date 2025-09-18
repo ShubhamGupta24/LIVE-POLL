@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // backend base URL
-const API_URL = process.env.REACT_APP_BACKEND_CONNECT_API;
+const API_URL = process.env.REACT_APP_BACKEND_CONNECT_API + "/api/polls";
 
 
 export const hello = () => axios.get(`${API_URL}`);

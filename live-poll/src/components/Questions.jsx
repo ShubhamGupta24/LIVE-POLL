@@ -109,7 +109,7 @@ export const Questions = () => {
                         <ul className="space-y-3">
                             {poll.options.map((option, i) => (
                                 <li key={i}>
-                                    <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border hover:bg-gray-100 transition">
+                                    <label className="flex items-center m-3 gap-3 cursor-pointer p-3 rounded-xl border hover:bg-gray-100 transition">
                                         <input
                                             type="radio"
                                             name="poll-options"
@@ -150,23 +150,24 @@ export const Questions = () => {
                         </div>
                     )}
 
-                    {/* Submit button */}
-                    {!submitted && timeLeft > 0 && (
-                        <button
-                            onClick={handleSubmit}
-                            className="w-full px-6 py-3 rounded-[24px] text-white font-bold text-lg shadow-lg
+
+                </div>
+                {/* Submit button */}
+                {!submitted && timeLeft > 0 && (
+                    <button
+                        onClick={handleSubmit}
+                        className="w-full px-6 py-3 rounded-[24px] text-white font-bold text-lg shadow-lg
                             bg-gradient-to-r from-[#8F64E1] via-[#8F64E1] to-[#1D68BD]
                             hover:opacity-90 transition disabled:opacity-50 mt-4"
-                        >
-                            Submit
-                        </button>
-                    )}
+                    >
+                        Submit
+                    </button>
+                )}
 
-                    {/* Timer expired message */}
-                    {!submitted && timeLeft === 0 && (
-                        <p className="mt-4 font-bold text-red-500 text-center text-lg">Time's up! Poll ended.</p>
-                    )}
-                </div>
+                {/* Timer expired message */}
+                {!submitted && timeLeft === 0 && (
+                    <p className="mt-4 font-bold text-red-500 text-center text-lg">Time's up! Poll ended.</p>
+                )}
             </div>
         </div >
     );

@@ -1,10 +1,8 @@
 // services/pollService.js
-let polls = []; // In-memory store (reset on restart)
+let polls = []; // In-memory store (resets on server restart)
 
 // ✅ For debugging
 const logPolls = () => console.log("📋 Current Polls:", JSON.stringify(polls, null, 2));
-
-const { getSocket } = require("../socket");
 
 const home = (req, res) => {
     res.send("Welcome to Poll Service 🚀");
@@ -39,17 +37,8 @@ const createPoll = ({ question, options, duration }) => {
     polls.push(poll);
     logPolls();
 
-    // ⏰ Auto-end after duration
-    setTimeout(() => {
-        const pollRef = polls.find((p) => p.id === poll.id);
-        if (pollRef && pollRef.active) {
-            pollRef.active = false;
-            console.log(`⏰ Poll "${pollRef.question}" ended automatically`);
-
-            const io = getSocket();
-            io.emit("endPoll", pollRef);
-        }
-    }, duration * 1000);
+    // ⏰ Timer logic should not emit sockets here anymore
+    // Controller will handle "endPoll" when needed
 
     return poll;
 };
@@ -61,9 +50,7 @@ const endPoll = (pollId) => {
     poll.active = false;
     console.log(`🛑 Poll "${poll.question}" ended manually`);
 
-    const io = getSocket();
-    io.emit("endPoll", poll);
-
+    // Do NOT emit socket here
     return poll;
 };
 

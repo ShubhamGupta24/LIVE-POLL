@@ -27,62 +27,66 @@ export const PollPreview = () => {
         fetchPoll();
     }, [pollId]);
 
-    // Socket listeners
+    // Socket listeners for live updates
     useEffect(() => {
         const socket = getSocket();
 
-        socket.on("updatePoll", (updatedPoll) => {
-            if (poll && updatedPoll.id === poll.id) {
+        const handleUpdate = (updatedPoll) => {
+            if (updatedPoll.id === pollId) {
                 console.log("🔄 Poll updated:", updatedPoll);
                 setPoll(updatedPoll);
             }
-        });
+        };
 
-        socket.on("endPoll", (endedPoll) => {
-            if (poll && endedPoll.id === poll.id) {
+        const handleEnd = (endedPoll) => {
+            if (endedPoll.id === pollId) {
                 console.log("⏹ Poll ended:", endedPoll);
                 setPoll(endedPoll);
                 setSubmitted(true);
             }
-        });
+        };
+
+        socket.on("updatePoll", handleUpdate);
+        socket.on("endPoll", handleEnd);
 
         return () => {
-            socket.off("updatePoll");
-            socket.off("endPoll");
+            socket.off("updatePoll", handleUpdate);
+            socket.off("endPoll", handleEnd);
         };
-    }, [poll]);
+    }, [pollId]);
 
-    // Timer countdown and auto-end
+    // Timer countdown & auto-end
     useEffect(() => {
         if (timer === null || submitted) return;
 
-        if (timer > 0) {
-            const interval = setInterval(() => {
-                setTimer((t) => t - 1);
-            }, 1000);
-            return () => clearInterval(interval);
-        } else {
-            // Timer reached 0 → automatically call endPoll
-            const autoEndPoll = async () => {
-                try {
-                    const { data } = await endPoll(pollId);
-                    console.log("✅ Poll ended automatically via frontend:", data.poll);
-                    setPoll(data.poll);
-                    setSubmitted(true);
-                } catch (err) {
-                    console.error("❌ Error ending poll:", err);
+        const interval = setInterval(() => {
+            setTimer((t) => {
+                if (t <= 1) {
+                    clearInterval(interval);
+                    autoEndPoll();
+                    return 0;
                 }
-            };
-            autoEndPoll();
-        }
+                return t - 1;
+            });
+        }, 1000);
+
+        const autoEndPoll = async () => {
+            try {
+                const { data } = await endPoll(pollId);
+                console.log("✅ Poll ended automatically:", data.poll);
+                setPoll(data.poll);
+                setSubmitted(true);
+            } catch (err) {
+                console.error("❌ Error ending poll:", err);
+            }
+        };
+
+        return () => clearInterval(interval);
     }, [timer, submitted, pollId]);
 
     if (!poll) return <p>Loading poll...</p>;
 
-    const totalVotes = poll.options.reduce(
-        (sum, option) => sum + (option.votes || 0),
-        0
-    );
+    const totalVotes = poll.options.reduce((sum, o) => sum + (o.votes || 0), 0);
 
     return (
         <div className="p-5 max-w-md mx-auto">
@@ -114,9 +118,7 @@ export const PollPreview = () => {
                     <h4 className="font-semibold mb-2">📊 Poll Results:</h4>
                     {poll.options.map((option, i) => {
                         const percentage =
-                            totalVotes > 0
-                                ? ((option.votes / totalVotes) * 100).toFixed(1)
-                                : 0;
+                            totalVotes > 0 ? ((option.votes / totalVotes) * 100).toFixed(1) : 0;
                         return (
                             <div key={i} className="mb-4">
                                 <div className="flex justify-between mb-1">

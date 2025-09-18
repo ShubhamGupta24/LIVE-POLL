@@ -52,7 +52,7 @@ export const PollPreview = () => {
         };
     }, [poll]);
 
-    // Timer (display only)
+    // Timer countdown and auto-end
     useEffect(() => {
         if (timer === null || submitted) return;
 
@@ -61,19 +61,21 @@ export const PollPreview = () => {
                 setTimer((t) => t - 1);
             }, 1000);
             return () => clearInterval(interval);
+        } else {
+            // Timer reached 0 → automatically call endPoll
+            const autoEndPoll = async () => {
+                try {
+                    const { data } = await endPoll(pollId);
+                    console.log("✅ Poll ended automatically via frontend:", data.poll);
+                    setPoll(data.poll);
+                    setSubmitted(true);
+                } catch (err) {
+                    console.error("❌ Error ending poll:", err);
+                }
+            };
+            autoEndPoll();
         }
-    }, [timer, submitted]);
-
-    // Manual end poll handler
-    const handleEndPoll = async () => {
-        try {
-            await endPoll(pollId);
-            console.log("✅ Poll manually ended");
-            setSubmitted(true);
-        } catch (err) {
-            console.error("❌ Error ending poll:", err);
-        }
-    };
+    }, [timer, submitted, pollId]);
 
     if (!poll) return <p>Loading poll...</p>;
 
@@ -100,25 +102,13 @@ export const PollPreview = () => {
 
             {/* Options / Results */}
             {!submitted ? (
-                <div>
-                    <ul className="space-y-2">
-                        {poll.options.map((option, i) => (
-                            <li key={i} className="p-2 border rounded bg-gray-100">
-                                {option.text}
-                            </li>
-                        ))}
-                    </ul>
-
-                    {/* End Poll Button */}
-                    <button
-                        className="mt-6 w-full px-6 py-2 rounded-lg text-white font-semibold 
-                            [background:linear-gradient(99.18deg,#E16464_-46.89%,#BD1D1D_223.45%)]
-                            hover:opacity-90 transition"
-                        onClick={handleEndPoll}
-                    >
-                        ⏹ End Poll
-                    </button>
-                </div>
+                <ul className="space-y-2">
+                    {poll.options.map((option, i) => (
+                        <li key={i} className="p-2 border rounded bg-gray-100">
+                            {option.text}
+                        </li>
+                    ))}
+                </ul>
             ) : (
                 <div>
                     <h4 className="font-semibold mb-2">📊 Poll Results:</h4>

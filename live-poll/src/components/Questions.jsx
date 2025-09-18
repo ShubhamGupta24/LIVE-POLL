@@ -103,7 +103,10 @@ export const Questions = () => {
                 {!submitted && timeLeft > 0 ? (
                     <ul className="space-y-3">
                         {poll.options.map((option, i) => (
-                            <li key={i}>
+                            <li key={i}
+                                className={`mb-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""
+                                    }`}
+                                style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
                                 <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border hover:bg-gray-100 transition">
                                     <input
                                         type="radio"

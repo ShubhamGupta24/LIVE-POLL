@@ -120,7 +120,10 @@ export const PollPreview = () => {
                         const percentage =
                             totalVotes > 0 ? ((option.votes / totalVotes) * 100).toFixed(1) : 0;
                         return (
-                            <div key={i} className="mb-4">
+                            <div key={i}
+                                className={`mb-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""
+                                    }`}
+                                style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
                                 <div className="flex justify-between mb-1">
                                     <span>{option.text}</span>
                                     <span className="font-semibold">{percentage}%</span>

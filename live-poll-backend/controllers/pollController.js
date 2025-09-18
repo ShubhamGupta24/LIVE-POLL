@@ -1,7 +1,7 @@
 // controllers/pollController.js
 
 const PollService = require("../services/pollService");
-
+let polls = []; // In-memory storage for polls
 
 const home = (req, res) => {
     try {
@@ -32,16 +32,25 @@ const getActivePoll = (req, res) => {
     return res.json({ success: true, poll });
 };
 
-const createPoll = (req, res) => {
-    const { question, options, duration } = req.body;
-    if (!question || !options || options.length < 2)
-        return res.status(400).json({ success: false, message: "Invalid input" });
+const createPoll = ({ question, options, duration }) => {
+    const poll = {
+        id: Date.now().toString(),
+        question,
+        options: options.map(opt => ({
+            text: opt.text,
+            isCorrect: opt.isCorrect,
+            votes: 0
+        })),
+        duration,
+        active: true,
+        createdAt: Date.now(),
+    };
 
-    const newPoll = PollService.createPoll({ question, options, duration });
-    const { getIO } = require("../socket");
-    const io = getIO();
-    io.emit("newPoll", newPoll);
-    return res.status(201).json({ success: true, poll: newPoll });
+    polls.push(poll);
+
+    console.log("✅ Poll created:", poll);
+
+    return poll;
 };
 
 const submitVote = (req, res) => {

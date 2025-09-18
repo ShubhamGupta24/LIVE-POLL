@@ -138,13 +138,17 @@ export const PollPreview = () => {
                                     <div key={i}
                                         className={`m-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
                                         style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
-                                        <div className="bg-gray-300 rounded-full h-5 overflow-hidden">
-                                            <div
-                                                className="flex justify-between mb-1 [background:linear-gradient(99.18deg,#8F64E1_-46.89%,#1D68BD_223.45%)] h-5 rounded-full transition-all duration-500"
-                                                style={{ width: `${percentage}%` }}
-                                            ><span>{option.text}</span>
-                                                <span className="font-semibold">{percentage}%</span></div>
+                                        <div
+                                            className="h-5 rounded-full flex justify-between items-center px-2 text-sm font-medium text-white"
+                                            style={{
+                                                width: `${percentage}%`,
+                                                background: "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)",
+                                            }}
+                                        >
+                                            <span>{option.text}</span>
+                                            <span>{percentage}%</span>
                                         </div>
+
                                     </div>
                                 );
                             })}

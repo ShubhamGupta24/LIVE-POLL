@@ -130,28 +130,36 @@ export const PollPreview = () => {
                         </ul>
                     ) : (
                         <div>
-                            <h4 className="font-semibold mb-2">📊 Poll Results:</h4>
+                            <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>
                             {poll.options.map((option, i) => {
                                 const percentage =
                                     totalVotes > 0 ? ((option.votes / totalVotes) * 100).toFixed(1) : 0;
+
                                 return (
-                                    <div key={i}
-                                        className={`m-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
-                                        style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
+                                    <div
+                                        key={i}
+                                        className={`m-3 p-1 rounded-xl overflow-hidden relative text-white ${option.isCorrect ? "border-2 border-[#7765DA]" : ""
+                                            }`}
+                                    >
+                                        {/* Background bar (gray) */}
+                                        <div className="absolute inset-0 bg-gray-700 rounded-xl"></div>
+
+                                        {/* Gradient bar with width proportional to percentage */}
                                         <div
-                                            className="h-5 rounded-full flex justify-between items-center px-2 text-sm font-medium text-white"
+                                            className="h-full flex justify-between items-center px-4 rounded-xl relative z-10"
                                             style={{
                                                 width: `${percentage}%`,
-                                                background: "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)",
+                                                background:
+                                                    "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)",
                                             }}
                                         >
-                                            <span>{option.text}</span>
-                                            <span>{percentage}%</span>
+                                            <span className="text-white font-medium">{option.text}</span>
+                                            <span className="text-white font-medium">{percentage}%</span>
                                         </div>
-
                                     </div>
                                 );
                             })}
+
 
                             <button
                                 className="fixed bottom-6 right-6 px-6 py-2 rounded-lg text-white font-semibold 

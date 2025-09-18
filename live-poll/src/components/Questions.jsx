@@ -69,7 +69,7 @@ export const Questions = () => {
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [poll, submitted]); // run when new poll loads or submitted changes
+    }, [poll, submitted, timeLeft]); // run when new poll loads or submitted changes
 
 
 

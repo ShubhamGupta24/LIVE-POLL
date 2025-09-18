@@ -97,16 +97,18 @@ export const Questions = () => {
                     </div>
                 </div>
 
-                <p className="text-lg mb-4 font-medium">{poll.question}</p>
+                <p
+                    className="text-lg mb-4 font-medium text-white p-4 rounded-xl bg-gradient-to-r from-[#343434] to-[#6E6E6E]"
+                >
+                    {poll.question}
+                </p>
+
 
                 {/* Options or Results */}
                 {!submitted && timeLeft > 0 ? (
                     <ul className="space-y-3">
                         {poll.options.map((option, i) => (
-                            <li key={i}
-                                className={`mb-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""
-                                    }`}
-                                style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
+                            <li key={i}>
                                 <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border hover:bg-gray-100 transition">
                                     <input
                                         type="radio"
@@ -129,10 +131,11 @@ export const Questions = () => {
                                 ? ((option.votes / totalVotes) * 100).toFixed(1)
                                 : 0;
                             return (
-                                <div key={i} className="mb-3">
+                                <div key={i}
+                                    className={`mb-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
+                                    style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
                                     <div className="flex justify-between mb-1 text-lg font-medium">
-                                        <span>{option.text}</span>
-                                        <span>{percentage}%</span>
+
                                     </div>
                                     <div className="bg-gray-300 h-5 rounded-full">
                                         <div
@@ -141,7 +144,8 @@ export const Questions = () => {
                                                 width: `${percentage}%`,
                                                 background: "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)",
                                             }}
-                                        />
+                                        ><span>{option.text}</span>
+                                            <span>{percentage}%</span></div>
                                     </div>
                                 </div>
                             );

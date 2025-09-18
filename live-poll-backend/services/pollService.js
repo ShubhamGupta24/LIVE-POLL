@@ -1,45 +1,47 @@
 // services/pollService.js
-let polls = []; // In-memory store
+let polls = []; // In-memory store (reset on restart)
+
+// ✅ For debugging
+const logPolls = () => console.log("📋 Current Polls:", JSON.stringify(polls, null, 2));
+
+const { getSocket } = require("../socket");
 
 const home = (req, res) => {
-    try {
-        console.log("Welcome to our home page");
-    } catch (error) {
-        console.log(error);
-    }
+    res.send("Welcome to Poll Service 🚀");
 };
 
 const getAllPolls = () => {
-    console.log("Fetching all polls:", polls);
+    logPolls();
     return polls;
 };
 
 const getPollById = (pollId) => {
     console.log("Fetching poll by ID:", pollId);
-    return polls.find(p => p.id === pollId);
-}
+    return polls.find((p) => p.id === pollId);
+};
 
-const getActivePoll = () => polls.find(p => p.active);
-
-// services/pollService.js
-const { getSocket } = require("../socket"); // adjust import to your setup
+const getActivePoll = () => polls.find((p) => p.active);
 
 const createPoll = ({ question, options, duration }) => {
     const poll = {
         id: Date.now().toString(),
         question,
-        options: options.map(opt => ({ text: opt.text, isCorrect: opt.isCorrect, votes: 0 })),
+        options: options.map((opt) => ({
+            text: opt.text,
+            isCorrect: opt.isCorrect,
+            votes: 0,
+        })),
         duration,
         active: true,
         createdAt: Date.now(),
     };
 
     polls.push(poll);
-    console.log("✅ Poll created and added:", poll);
-    console.log("📋 All polls now:", polls);
+    logPolls();
 
+    // ⏰ Auto-end after duration
     setTimeout(() => {
-        const pollRef = polls.find(p => p.id === poll.id);
+        const pollRef = polls.find((p) => p.id === poll.id);
         if (pollRef && pollRef.active) {
             pollRef.active = false;
             console.log(`⏰ Poll "${pollRef.question}" ended automatically`);
@@ -52,25 +54,21 @@ const createPoll = ({ question, options, duration }) => {
     return poll;
 };
 
-
 const endPoll = (pollId) => {
-    const poll = polls.find(p => p.id === pollId);
+    const poll = polls.find((p) => p.id === pollId);
     if (!poll) return null;
 
     poll.active = false;
-
     console.log(`🛑 Poll "${poll.question}" ended manually`);
 
-    // 🚨 Broadcast to clients
     const io = getSocket();
     io.emit("endPoll", poll);
 
     return poll;
 };
 
-
 const submitVote = (pollId, optionIndex) => {
-    const poll = polls.find(p => p.id === pollId && p.active);
+    const poll = polls.find((p) => p.id === pollId && p.active);
     if (!poll) return null;
 
     if (poll.options[optionIndex]) {
@@ -79,4 +77,12 @@ const submitVote = (pollId, optionIndex) => {
     return poll;
 };
 
-module.exports = { createPoll, submitVote, endPoll, getAllPolls, home, getPollById, getActivePoll };
+module.exports = {
+    createPoll,
+    submitVote,
+    endPoll,
+    getAllPolls,
+    home,
+    getPollById,
+    getActivePoll,
+};

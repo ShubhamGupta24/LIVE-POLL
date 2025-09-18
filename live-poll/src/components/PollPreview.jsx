@@ -117,13 +117,14 @@ export const PollPreview = () => {
                     </p>
 
 
-                    {/* Options / Results */}
                     {!submitted ? (
                         <ul className="space-y-2">
                             {poll.options.map((option, i) => (
-                                <li key={i}
+                                <li
+                                    key={i}
                                     className={`m-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
-                                    style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
+                                    style={option.isCorrect ? { borderColor: "#7765DA" } : {}}
+                                >
                                     {option.text}
                                 </li>
                             ))}
@@ -133,56 +134,45 @@ export const PollPreview = () => {
                             <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>
                             {poll.options.map((option, i) => {
                                 const percentage =
-                                    totalVotes > 0 ? ((option.votes / totalVotes) * 100).toFixed(1) : 0;
+                                    totalVotes > 0
+                                        ? ((option.votes / totalVotes) * 100).toFixed(1)
+                                        : 0;
 
                                 return (
-                                    <div>
-                                        <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>
-                                        {poll.options.map((option, i) => {
-                                            const percentage =
-                                                totalVotes > 0
-                                                    ? ((option.votes / totalVotes) * 100).toFixed(1)
-                                                    : 0;
-
-                                            return (
-                                                <div
-                                                    key={i}
-                                                    className={`m-3 rounded-xl overflow-hidden relative text-white ${option.isCorrect ? "border-2 border-[#7765DA]" : ""
-                                                        }`}
-                                                >
-                                                    {/* Gradient bar or light gray for low/0% */}
-                                                    <div
-                                                        className="flex justify-between items-center px-3 py-3 relative z-10 text-lg font-medium rounded-xl"
-                                                        style={{
-                                                            width: percentage > 0 ? `${percentage}%` : "100%",
-                                                            background:
-                                                                percentage > 0
-                                                                    ? "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)"
-                                                                    : "#E5E5E5", // light gray for 0% or very low
-                                                            color: percentage > 0 ? "#FFFFFF" : "#555555", // text contrast
-                                                        }}
-                                                    >
-                                                        <span>{option.text}</span>
-                                                        <span>{percentage}%</span>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
+                                    <div
+                                        key={i}
+                                        className={`m-3 rounded-xl overflow-hidden relative text-white ${option.isCorrect ? "border-2 border-[#7765DA]" : ""
+                                            }`}
+                                    >
+                                        <div
+                                            className="flex justify-between items-center px-3 py-3 relative z-10 text-lg font-medium rounded-xl"
+                                            style={{
+                                                width: percentage > 0 ? `${percentage}%` : "100%",
+                                                background:
+                                                    percentage > 0
+                                                        ? "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)"
+                                                        : "#E5E5E5",
+                                                color: percentage > 0 ? "#FFFFFF" : "#555555",
+                                            }}
+                                        >
+                                            <span>{option.text}</span>
+                                            <span>{percentage}%</span>
+                                        </div>
                                     </div>
                                 );
                             })}
 
-
                             <button
                                 className="fixed bottom-6 right-6 px-6 py-2 rounded-lg text-white font-semibold 
-                            [background:linear-gradient(99.18deg,#8F64E1_-46.89%,#1D68BD_223.45%)]
-                            hover:opacity-90 transition"
+      [background:linear-gradient(99.18deg,#8F64E1_-46.89%,#1D68BD_223.45%)]
+      hover:opacity-90 transition"
                                 onClick={() => navigate("/createQuestions")}
                             >
                                 + Ask a new question
                             </button>
                         </div>
                     )}
+
                 </div>
             </div>
         </div >

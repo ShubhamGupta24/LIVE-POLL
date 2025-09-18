@@ -35,16 +35,15 @@ const createPoll = ({ question, options, duration }) => {
     };
 
     polls.push(poll);
+    console.log("✅ Poll created and added:", poll);
+    console.log("📋 All polls now:", polls);
 
-    // Auto-end poll after duration
     setTimeout(() => {
         const pollRef = polls.find(p => p.id === poll.id);
         if (pollRef && pollRef.active) {
             pollRef.active = false;
-
             console.log(`⏰ Poll "${pollRef.question}" ended automatically`);
 
-            // 🚨 Broadcast to all clients
             const io = getSocket();
             io.emit("endPoll", pollRef);
         }
@@ -52,6 +51,7 @@ const createPoll = ({ question, options, duration }) => {
 
     return poll;
 };
+
 
 const endPoll = (pollId) => {
     const poll = polls.find(p => p.id === pollId);

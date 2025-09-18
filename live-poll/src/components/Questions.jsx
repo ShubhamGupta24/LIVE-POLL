@@ -32,14 +32,10 @@ export const Questions = () => {
             setPoll((prev) => (prev && updatedPoll.id === prev.id ? updatedPoll : prev));
         });
 
-        socket.on("endPoll", (endedPoll) => {
-            setPoll((prev) => (prev && endedPoll.id === prev.id ? endedPoll : prev));
-            setSubmitted(true);
-        });
+
 
         return () => {
             socket.off("updatePoll");
-            socket.off("endPoll");
         };
     }, []);
 

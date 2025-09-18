@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getSocket } from "../socket";
 import { fetchPollById } from "../api";
 import { FaQuestionCircle } from "react-icons/fa";
 import TimerImage from "../assets/Timer.png";
 
 export const PollPreview = () => {
+    const navigate = useNavigate();
     const { pollId } = useParams();
     const [poll, setPoll] = useState(null);
     const [timer, setTimer] = useState(null);

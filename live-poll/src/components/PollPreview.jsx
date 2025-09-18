@@ -89,7 +89,7 @@ export const PollPreview = () => {
     const totalVotes = poll.options.reduce((sum, o) => sum + (o.votes || 0), 0);
 
     return (
-        <div className="p-5 max-w-md mx-auto">
+        <div className="min-h-screen p-6 flex flex-col items-center bg-gray-50">
             <h5 className="inline-flex mb-8 px-8 py-3 rounded-[24px] items-center justify-center gap-[7px] text-white font-bold text-xl shadow-lg
                 bg-gradient-to-r from-[#8F64E1] via-[#8F64E1] to-[#1D68BD]
                 hover:opacity-90 transition">
@@ -109,7 +109,7 @@ export const PollPreview = () => {
                     </div>
                 </div>
 
-                <div className="mb-4 border border-[#AF8FF1]">
+                <div className="mb-4 border border-[#AF8FF1] rounded-[10px] p-4">
                     <p
                         className="text-lg mb-4 font-medium text-white p-4 rounded-t-[10px] bg-gradient-to-r from-[#343434] to-[#6E6E6E]"
                     >

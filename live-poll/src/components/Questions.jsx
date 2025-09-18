@@ -58,6 +58,7 @@ export const Questions = () => {
             setTimeLeft((prev) => {
                 if (prev <= 1) {
                     clearInterval(timer);
+                    console.log("⏰ Timer ended", timeLeft);
                     return 0;
                 }
                 return prev - 1;

@@ -96,80 +96,81 @@ export const Questions = () => {
                         )}
                     </div>
                 </div>
+                <div className="mb-4 border border-[#AF8FF1]">
+                    <p
+                        className="text-lg mb-4 font-medium text-white p-4 rounded-t-[10px] bg-gradient-to-r from-[#343434] to-[#6E6E6E]"
+                    >
+                        {poll.question}
+                    </p>
 
-                <p
-                    className="text-lg mb-4 font-medium text-white p-4 rounded-t-[10px] bg-gradient-to-r from-[#343434] to-[#6E6E6E]"
-                >
-                    {poll.question}
-                </p>
 
+                    {/* Options or Results */}
+                    {!submitted && timeLeft > 0 ? (
+                        <ul className="space-y-3">
+                            {poll.options.map((option, i) => (
+                                <li key={i}>
+                                    <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border hover:bg-gray-100 transition">
+                                        <input
+                                            type="radio"
+                                            name="poll-options"
+                                            value={option.text}
+                                            checked={selectedOption === option.text}
+                                            onChange={() => setSelectedOption(option.text)}
+                                            className="accent-[#8F64E1]"
+                                        />
+                                        <span className="text-lg font-medium">{option.text}</span>
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <div>
+                            <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>
+                            {poll.options.map((option, i) => {
+                                const percentage = totalVotes > 0
+                                    ? ((option.votes / totalVotes) * 100).toFixed(1)
+                                    : 0;
+                                return (
+                                    <div key={i}
+                                        className={`mb-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
+                                        style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
+                                        <div className="flex justify-between mb-1 text-lg font-medium">
 
-                {/* Options or Results */}
-                {!submitted && timeLeft > 0 ? (
-                    <ul className="space-y-3">
-                        {poll.options.map((option, i) => (
-                            <li key={i}>
-                                <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border hover:bg-gray-100 transition">
-                                    <input
-                                        type="radio"
-                                        name="poll-options"
-                                        value={option.text}
-                                        checked={selectedOption === option.text}
-                                        onChange={() => setSelectedOption(option.text)}
-                                        className="accent-[#8F64E1]"
-                                    />
-                                    <span className="text-lg font-medium">{option.text}</span>
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <div>
-                        <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>
-                        {poll.options.map((option, i) => {
-                            const percentage = totalVotes > 0
-                                ? ((option.votes / totalVotes) * 100).toFixed(1)
-                                : 0;
-                            return (
-                                <div key={i}
-                                    className={`mb-3 p-2 rounded-xl ${option.isCorrect ? "border-2" : ""}`}
-                                    style={option.isCorrect ? { borderColor: "#7765DA" } : {}}>
-                                    <div className="flex justify-between mb-1 text-lg font-medium">
-
+                                        </div>
+                                        <div className="bg-gray-300 h-5 rounded-full">
+                                            <div
+                                                className="h-full rounded-full"
+                                                style={{
+                                                    width: `${percentage}%`,
+                                                    background: "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)",
+                                                }}
+                                            ><span>{option.text}</span>
+                                                <span>{percentage}%</span></div>
+                                        </div>
                                     </div>
-                                    <div className="bg-gray-300 h-5 rounded-full">
-                                        <div
-                                            className="h-full rounded-full"
-                                            style={{
-                                                width: `${percentage}%`,
-                                                background: "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)",
-                                            }}
-                                        ><span>{option.text}</span>
-                                            <span>{percentage}%</span></div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                )}
+                                );
+                            })}
+                        </div>
+                    )}
 
-                {/* Submit button */}
-                {!submitted && timeLeft > 0 && (
-                    <button
-                        onClick={handleSubmit}
-                        className="w-full px-6 py-3 rounded-[24px] text-white font-bold text-lg shadow-lg
+                    {/* Submit button */}
+                    {!submitted && timeLeft > 0 && (
+                        <button
+                            onClick={handleSubmit}
+                            className="w-full px-6 py-3 rounded-[24px] text-white font-bold text-lg shadow-lg
                             bg-gradient-to-r from-[#8F64E1] via-[#8F64E1] to-[#1D68BD]
                             hover:opacity-90 transition disabled:opacity-50 mt-4"
-                    >
-                        Submit
-                    </button>
-                )}
+                        >
+                            Submit
+                        </button>
+                    )}
 
-                {/* Timer expired message */}
-                {!submitted && timeLeft === 0 && (
-                    <p className="mt-4 font-bold text-red-500 text-center text-lg">Time's up! Poll ended.</p>
-                )}
+                    {/* Timer expired message */}
+                    {!submitted && timeLeft === 0 && (
+                        <p className="mt-4 font-bold text-red-500 text-center text-lg">Time's up! Poll ended.</p>
+                    )}
+                </div>
             </div>
-        </div>
+        </div >
     );
 };

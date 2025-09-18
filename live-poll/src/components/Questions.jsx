@@ -54,19 +54,25 @@ export const Questions = () => {
     // Initialize timer when poll loads
     useEffect(() => {
         if (!poll) return;
-        setTimeLeft(poll.duration); // duration in seconds
+        setTimeLeft(poll.duration); // set initial value immediately
     }, [poll]);
 
-    // Countdown effect
+    // Countdown
     useEffect(() => {
-        if (timeLeft <= 0) return; // stop when timer reaches 0
+        if (submitted || timeLeft <= 0) return;
 
         const interval = setInterval(() => {
-            setTimeLeft((prev) => Math.max(prev - 1, 0));
+            setTimeLeft(prev => {
+                if (prev <= 1) {
+                    clearInterval(interval);
+                    return 0;
+                }
+                return prev - 1;
+            });
         }, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [submitted, timeLeft]);
 
 
 

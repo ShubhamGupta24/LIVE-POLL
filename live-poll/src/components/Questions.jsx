@@ -52,7 +52,7 @@ export const Questions = () => {
 
     // Timer countdown (just for display, no auto-end)
     useEffect(() => {
-        if (!poll || submitted) return;
+        if (timeLeft === null || submitted) return;
 
         const timer = setInterval(() => {
             setTimeLeft((prev) => {

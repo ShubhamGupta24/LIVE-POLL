@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaQuestionCircle } from "react-icons/fa";
 import TimerImage from "../assets/Timer.png";
 import { getSocket } from "../socket";
-import { fetchPolls, submitVote } from "../api";
+import { fetchActivePoll, submitVote } from "../api";
 
 export const Questions = () => {
     const socket = getSocket();
@@ -15,8 +15,8 @@ export const Questions = () => {
     useEffect(() => {
         const loadPoll = async () => {
             try {
-                const res = await fetchPolls();
-                const latestPoll = res.data.polls[0];
+                const res = await fetchActivePoll();
+                const latestPoll = res.data.poll;
                 if (latestPoll) {
                     setPoll(latestPoll);
                     setTimeLeft(latestPoll.duration);

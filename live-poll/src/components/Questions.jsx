@@ -104,7 +104,6 @@ export const Questions = () => {
                     </p>
 
 
-                    {/* Options or Results */}
                     {!submitted && timeLeft > 0 ? (
                         <ul className="space-y-3">
                             {poll.options.map((option, i) => (
@@ -128,33 +127,34 @@ export const Questions = () => {
                             <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>
                             {poll.options.map((option, i) => {
                                 const percentage =
-                                    totalVotes > 0 ? ((option.votes / totalVotes) * 100).toFixed(1) : 0;
+                                    totalVotes > 0
+                                        ? ((option.votes / totalVotes) * 100).toFixed(1)
+                                        : 0;
 
                                 return (
                                     <div
                                         key={i}
-                                        className={`m-3 p-1 rounded-xl overflow-hidden relative text-white ${option.isCorrect ? "border-2 border-[#7765DA]" : ""
+                                        className={`m-3 rounded-xl overflow-hidden relative text-white ${option.isCorrect ? "border-2 border-[#7765DA]" : ""
                                             }`}
                                     >
-                                        {/* Background bar (gray) */}
-                                        <div className="flex items-center m-3 gap-3 cursor-pointer p-3 rounded-xl border hover:bg-gray-100 transition"></div>
-
-                                        {/* Gradient bar with width proportional to percentage */}
+                                        {/* Gradient bar or light gray for low/0% */}
                                         <div
-                                            className="h-full flex justify-between items-center px-4 rounded-xl relative z-10"
+                                            className="flex justify-between items-center px-3 py-3 relative z-10 text-lg font-medium rounded-xl"
                                             style={{
-                                                width: `${percentage}%`,
+                                                width: percentage > 0 ? `${percentage}%` : "100%",
                                                 background:
-                                                    "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)",
+                                                    percentage > 0
+                                                        ? "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)"
+                                                        : "#E5E5E5", // light gray for 0% or very low
+                                                color: percentage > 0 ? "#FFFFFF" : "#555555", // text contrast
                                             }}
                                         >
-                                            <span className="text-white font-medium">{option.text}</span>
-                                            <span className="text-white font-medium">{percentage}%</span>
+                                            <span>{option.text}</span>
+                                            <span>{percentage}%</span>
                                         </div>
                                     </div>
                                 );
                             })}
-
                         </div>
                     )}
 

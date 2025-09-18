@@ -136,24 +136,38 @@ export const PollPreview = () => {
                                     totalVotes > 0 ? ((option.votes / totalVotes) * 100).toFixed(1) : 0;
 
                                 return (
-                                    <div
-                                        key={i}
-                                        className={`m-3 p-1 rounded-xl overflow-hidden relative text-white ${option.isCorrect ? "border-2 border-[#7765DA]" : ""
-                                            }`}
-                                    >
+                                    <div>
+                                        <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>
+                                        {poll.options.map((option, i) => {
+                                            const percentage =
+                                                totalVotes > 0
+                                                    ? ((option.votes / totalVotes) * 100).toFixed(1)
+                                                    : 0;
 
-                                        {/* Gradient bar with width proportional to percentage */}
-                                        <div
-                                            className="h-full flex justify-between items-center px-4 rounded-xl relative z-10"
-                                            style={{
-                                                width: `${percentage}%`,
-                                                background:
-                                                    "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)",
-                                            }}
-                                        >
-                                            <span className="text-white font-medium">{option.text}</span>
-                                            <span className="text-white font-medium">{percentage}%</span>
-                                        </div>
+                                            return (
+                                                <div
+                                                    key={i}
+                                                    className={`m-3 rounded-xl overflow-hidden relative text-white ${option.isCorrect ? "border-2 border-[#7765DA]" : ""
+                                                        }`}
+                                                >
+                                                    {/* Gradient bar or light gray for low/0% */}
+                                                    <div
+                                                        className="flex justify-between items-center px-3 py-3 relative z-10 text-lg font-medium rounded-xl"
+                                                        style={{
+                                                            width: percentage > 0 ? `${percentage}%` : "100%",
+                                                            background:
+                                                                percentage > 0
+                                                                    ? "linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%)"
+                                                                    : "#E5E5E5", // light gray for 0% or very low
+                                                            color: percentage > 0 ? "#FFFFFF" : "#555555", // text contrast
+                                                        }}
+                                                    >
+                                                        <span>{option.text}</span>
+                                                        <span>{percentage}%</span>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 );
                             })}

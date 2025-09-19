@@ -25,7 +25,7 @@ const Countdown = ({ duration, onComplete }) => {
     const seconds = timeLeft % 60;
 
     return (
-        <span className="font-mono text-lg text-[#7765DA]">
+        <span className="font-mono text-lg text-[#f1112b]">
             {minutes}:{seconds.toString().padStart(2, "0")}
         </span>
     );

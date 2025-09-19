@@ -51,14 +51,6 @@ export const Questions = () => {
         };
     }, [poll, socket]);
 
-    // Timer countdown (just for display, no auto-end)
-    // Initialize timer when poll loads
-    useEffect(() => {
-        if (!poll) return;
-        setTimeLeft(poll.duration); // set initial value immediately
-    }, [poll]);
-
-
 
 
     // Submit vote

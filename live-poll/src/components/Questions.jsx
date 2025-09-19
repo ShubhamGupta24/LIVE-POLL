@@ -12,7 +12,8 @@ export const Questions = () => {
     const [submitted, setSubmitted] = useState(false);
     const [timeLeft, setTimeLeft] = useState(0);
 
-    // Load active poll and set up socket listener
+
+
     useEffect(() => {
         const loadPoll = async () => {
             try {
@@ -32,9 +33,6 @@ export const Questions = () => {
         };
 
         loadPoll();
-    }, [timeLeft]);
-
-    useEffect(() => {
 
         const handleUpdate = (updatedPoll) => {
             if (poll && updatedPoll.id === poll.id) {

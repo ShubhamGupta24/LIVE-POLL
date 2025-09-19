@@ -87,7 +87,7 @@ export const PollPreview = () => {
                     <div className="flex items-center text-red-500 font-bold ml-auto">
                         <img src={TimerImage} alt="Timer" className="w-10 h-10 inline-block" />
                         {!submitted && timer > 0 && (
-                            <Countdown duration={timer} onComplete={() => handlePollEnd} />
+                            <Countdown duration={timer} onComplete={handlePollEnd} />
                         )}
                     </div>
                 </div>

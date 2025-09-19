@@ -10,10 +10,9 @@ export const Questions = () => {
     const [poll, setPoll] = useState(null);
     const [selectedOption, setSelectedOption] = useState("");
     const [submitted, setSubmitted] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(0);
+    const [duration, setDuration] = useState(0); // Use duration as the source of truth
 
-
-
+    // Effect for fetching the initial poll and setting up socket listeners
     useEffect(() => {
         const loadPoll = async () => {
             try {
@@ -21,11 +20,9 @@ export const Questions = () => {
                 const latestPoll = res.data.poll;
                 if (latestPoll) {
                     setPoll(latestPoll);
-
-                    // only set timer if not already running
-                    if (timeLeft === null) {
-                        setTimeLeft(latestPoll.duration);
-                    }
+                    setDuration(latestPoll.duration);
+                    setSubmitted(false);
+                    setSelectedOption("");
                 }
             } catch (err) {
                 console.error("Error fetching poll:", err);
@@ -35,14 +32,18 @@ export const Questions = () => {
         loadPoll();
 
         const handleUpdate = (updatedPoll) => {
-            if (poll && updatedPoll.id === poll.id) {
-                setPoll(prev => ({ ...prev, options: updatedPoll.options })); // replace poll to trigger re-render
-            }
+            // Check if the updated poll is the one we are displaying
+            setPoll(prev => {
+                if (prev && updatedPoll.id === prev.id) {
+                    return { ...prev, options: updatedPoll.options };
+                }
+                return prev;
+            });
         };
 
         const handleNewPoll = (newPoll) => {
             setPoll(newPoll);
-            setTimeLeft(newPoll.duration);
+            setDuration(newPoll.duration);
             setSubmitted(false);
             setSelectedOption("");
         };
@@ -54,14 +55,12 @@ export const Questions = () => {
             socket.off("updatePoll", handleUpdate);
             socket.off("newPoll", handleNewPoll);
         };
-    }, [poll, socket]);
+    }, [socket]); // Only depend on the socket object
 
-
-    // ✅ Handle poll end
+    // ✅ Correctly handle poll end
     const handlePollEnd = () => {
         console.log("⏱️ Countdown finished → Ending poll in UI");
         setSubmitted(true);
-        setTimeLeft(0);
     };
 
     // Submit vote
@@ -98,8 +97,9 @@ export const Questions = () => {
                     <h3 className="text-xl font-semibold">Question</h3>
                     <div className="flex items-center text-red-500 font-bold ml-auto">
                         <img src={TimerImage} alt="Timer" className="w-10 h-10" />
-                        {!submitted && timeLeft > 0 && (
-                            <Countdown duration={timeLeft} onComplete={() => handlePollEnd} />
+                        {!submitted && duration > 0 && (
+                            // Pass the function reference directly
+                            <Countdown duration={duration} onComplete={handlePollEnd} />
                         )}
                     </div>
                 </div>
@@ -111,7 +111,7 @@ export const Questions = () => {
                     </p>
 
 
-                    {!submitted && timeLeft > 0 ? (
+                    {!submitted && duration > 0 ? (
                         <ul className="space-y-3">
                             {poll.options.map((option, i) => (
                                 <li key={i}>
@@ -168,22 +168,22 @@ export const Questions = () => {
 
                 </div>
                 {/* Submit button */}
-                {!submitted && timeLeft > 0 && (
+                {!submitted && duration > 0 ? (
                     <button
                         onClick={handleSubmit}
+                        disabled={!selectedOption}
                         className="w-full px-6 py-3 rounded-[24px] text-white font-bold text-lg shadow-lg
                             bg-gradient-to-r from-[#8F64E1] via-[#8F64E1] to-[#1D68BD]
                             hover:opacity-90 transition disabled:opacity-50 mt-4"
                     >
                         Submit
                     </button>
-                )}
-
-                {/* Timer expired message */}
-                {!submitted && timeLeft === 0 && (
-                    <p className="mt-4 font-bold text-red-500 text-center text-lg">Time's up! Poll ended.</p>
+                ) : (
+                    <p className="mt-4 font-bold text-red-500 text-center text-lg">
+                        {submitted ? "Your vote has been cast!" : "Timer has expired!"}
+                    </p>
                 )}
             </div>
-        </div >
+        </div>
     );
 };

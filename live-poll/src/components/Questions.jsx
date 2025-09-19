@@ -3,6 +3,7 @@ import { FaQuestionCircle } from "react-icons/fa";
 import TimerImage from "../assets/Timer.png";
 import { getSocket } from "../socket";
 import { fetchActivePoll, submitVote } from "../api";
+import Countdown from "./Countdown";
 
 export const Questions = () => {
     const socket = getSocket();
@@ -57,22 +58,6 @@ export const Questions = () => {
         setTimeLeft(poll.duration); // set initial value immediately
     }, [poll]);
 
-    // Countdown
-    useEffect(() => {
-        if (submitted || timeLeft <= 0) return;
-
-        const interval = setInterval(() => {
-            setTimeLeft(prev => {
-                if (prev <= 1) {
-                    clearInterval(interval);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [submitted, timeLeft]);
 
 
 
@@ -111,7 +96,7 @@ export const Questions = () => {
                     <div className="flex items-center text-red-500 font-bold ml-auto">
                         <img src={TimerImage} alt="Timer" className="w-10 h-10" />
                         {!submitted && timeLeft > 0 && (
-                            <span className="ml-2 font-bold text-lg">00:{timeLeft}s</span>
+                            <Countdown duration={timeLeft} onComplete={() => setSubmitted(true)} />
                         )}
                     </div>
                 </div>

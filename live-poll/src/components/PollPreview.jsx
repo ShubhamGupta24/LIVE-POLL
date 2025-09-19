@@ -4,6 +4,7 @@ import { getSocket } from "../socket";
 import { fetchPollById, endPoll } from "../api";
 import { FaQuestionCircle } from "react-icons/fa";
 import TimerImage from "../assets/Timer.png";
+import Countdown from "./Countdown";
 
 export const PollPreview = () => {
     const navigate = useNavigate();
@@ -55,34 +56,16 @@ export const PollPreview = () => {
         };
     }, [pollId]);
 
-    // Timer countdown & auto-end
-    useEffect(() => {
-        if (timer === null || submitted) return;
-
-        const interval = setInterval(() => {
-            setTimer((t) => {
-                if (t <= 1) {
-                    clearInterval(interval);
-                    autoEndPoll();
-                    return 0;
-                }
-                return t - 1;
-            });
-        }, 1000);
-
-        const autoEndPoll = async () => {
-            try {
-                const { data } = await endPoll(pollId);
-                console.log("✅ Poll ended automatically:", data.poll);
-                setPoll(data.poll);
-                setSubmitted(true);
-            } catch (err) {
-                console.error("❌ Error ending poll:", err);
-            }
-        };
-
-        return () => clearInterval(interval);
-    }, [timer, submitted, pollId]);
+    const handlePollEnd = async () => {
+        try {
+            const { data } = await endPoll(pollId);
+            console.log("✅ Poll ended automatically:", data.poll);
+            setPoll(data.poll);
+            setSubmitted(true);
+        } catch (err) {
+            console.error("❌ Error ending poll:", err);
+        }
+    };
 
     if (!poll) return <p>Loading poll...</p>;
 
@@ -104,7 +87,7 @@ export const PollPreview = () => {
                     <div className="flex items-center text-red-500 font-bold ml-auto">
                         <img src={TimerImage} alt="Timer" className="w-10 h-10 inline-block" />
                         {!submitted && timer > 0 && (
-                            <span className="ml-auto font-bold">00:{timer}s</span>
+                            <Countdown duration={timer} onComplete={() => handlePollEnd} />
                         )}
                     </div>
                 </div>

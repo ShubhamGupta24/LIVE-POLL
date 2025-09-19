@@ -16,7 +16,6 @@ export const CreateQuestions = () => {
     // Initialize teacher socket
     useEffect(() => {
         const socket = initSocket({ role: "teacher" });
-        console.log("🧑‍🏫 Teacher socket initialized:", socket.id);
 
         return () => {
             socket.disconnect();
@@ -53,7 +52,6 @@ export const CreateQuestions = () => {
             setLoading(true);
             const payload = { question, options: filledOptions, duration: timer };
             let { data } = await createPoll(payload);
-            console.log("✅ Poll created:", data);
             alert("Poll successfully sent to backend!");
 
             // Reset form

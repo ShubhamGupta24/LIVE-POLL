@@ -20,7 +20,6 @@ export const PollPreview = () => {
                 const { data } = await fetchPollById(pollId);
                 setPoll(data.poll);
                 setTimer(data.poll.duration);
-                console.log("✅ Fetched poll:", data.poll);
             } catch (err) {
                 console.error("❌ Error fetching poll:", err);
             }
@@ -34,14 +33,12 @@ export const PollPreview = () => {
 
         const handleUpdate = (updatedPoll) => {
             if (updatedPoll.id === pollId) {
-                console.log("🔄 Poll updated:", updatedPoll);
                 setPoll(updatedPoll);
             }
         };
 
         const handleEnd = (endedPoll) => {
             if (endedPoll.id === pollId) {
-                console.log("⏹ Poll ended:", endedPoll);
                 setPoll(endedPoll);
                 setSubmitted(true);
             }
@@ -59,7 +56,6 @@ export const PollPreview = () => {
     const handlePollEnd = async () => {
         try {
             const { data } = await endPoll(pollId);
-            console.log("✅ Poll ended automatically:", data.poll);
             setPoll(data.poll);
             setSubmitted(true);
         } catch (err) {
@@ -119,7 +115,6 @@ export const PollPreview = () => {
 
                     ) : (
                         <div>
-                            <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>
                             {poll.options.map((option, i) => {
                                 const percentage =
                                     totalVotes > 0

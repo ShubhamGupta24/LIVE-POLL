@@ -59,7 +59,6 @@ export const Questions = () => {
 
     // ✅ Correctly handle poll end
     const handlePollEnd = () => {
-        console.log("⏱️ Countdown finished → Ending poll in UI");
         setSubmitted(true);
     };
 
@@ -131,7 +130,6 @@ export const Questions = () => {
                         </ul>
                     ) : (
                         <div>
-                            <h4 className="font-semibold text-lg mb-3">📊 Poll Results:</h4>
                             {poll.options.map((option, i) => {
                                 const percentage =
                                     totalVotes > 0

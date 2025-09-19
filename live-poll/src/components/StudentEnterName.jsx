@@ -26,9 +26,12 @@ export const EnterName = () => {
     }, [loading, navigate, name]);
 
     return (
-        <div className="text-center mt-10">
-            <h5 className="text-xl mb-4">✨Intervue Poll</h5>
-
+        <div className="min-h-screen p-6 flex flex-col items-center bg-gray-50">
+            <h5 className="inline-flex mb-8 px-8 py-3 rounded-[24px] items-center justify-center gap-[7px] text-white font-bold text-xl shadow-lg
+                bg-gradient-to-r from-[#8F64E1] via-[#8F64E1] to-[#1D68BD]
+                hover:opacity-90 transition">
+                ✨Intervue Poll
+            </h5>
             {!loading ? (
                 <>
                     <h2 className="text-2xl mb-2">

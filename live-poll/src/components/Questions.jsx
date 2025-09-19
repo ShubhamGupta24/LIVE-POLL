@@ -101,7 +101,7 @@ export const Questions = () => {
                     <div className="flex items-center text-red-500 font-bold ml-auto">
                         <img src={TimerImage} alt="Timer" className="w-10 h-10" />
                         {!submitted && timeLeft > 0 && (
-                            <Countdown duration={timeLeft} onComplete={() => setSubmitted(true)} />
+                            <Countdown duration={timeLeft} onComplete={handlePollEnd} />
                         )}
                     </div>
                 </div>

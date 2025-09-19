@@ -20,7 +20,11 @@ export const Questions = () => {
                 const latestPoll = res.data.poll;
                 if (latestPoll) {
                     setPoll(latestPoll);
-                    setTimeLeft(latestPoll.duration);
+
+                    // only set timer if not already running
+                    if (timeLeft === null) {
+                        setTimeLeft(latestPoll.duration);
+                    }
                 }
             } catch (err) {
                 console.error("Error fetching poll:", err);
@@ -28,10 +32,13 @@ export const Questions = () => {
         };
 
         loadPoll();
+    }, [timeLeft]);
+
+    useEffect(() => {
 
         const handleUpdate = (updatedPoll) => {
             if (poll && updatedPoll.id === poll.id) {
-                setPoll({ ...updatedPoll }); // replace poll to trigger re-render
+                setPoll(prev => ({ ...prev, options: updatedPoll.options })); // replace poll to trigger re-render
             }
         };
 
@@ -52,6 +59,12 @@ export const Questions = () => {
     }, [poll, socket]);
 
 
+    // ✅ Handle poll end
+    const handlePollEnd = () => {
+        console.log("⏱️ Countdown finished → Ending poll in UI");
+        setSubmitted(true);
+        setTimeLeft(0);
+    };
 
     // Submit vote
     const handleSubmit = async () => {
